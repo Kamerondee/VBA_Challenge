@@ -67,6 +67,8 @@ Sub stockanalysis()
 
             ticker = ws.Cells(i, 1).Value
 
+            ' Calculate total volume
+
             voltotal = voltotal + ws.Cells(i, 7).Value
    
             ws.Range("I" & sumtbl).Value = ticker
@@ -80,7 +82,9 @@ Sub stockanalysis()
             ' Reset counter
            
             voltotal = 0
-
+        
+        ' Print total volume
+        
         Else
        
             voltotal = voltotal + ws.Cells(i, 7).Value
@@ -93,11 +97,15 @@ Sub stockanalysis()
 
         count = -1
 
+        ' Start loop
+
         For i = 2 To lastrow
 
             If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
 
                 close_price = ws.Cells(i, 6).Value
+
+                ' Figure out the price difference
 
                 price_difference = close_price - open_price
 
@@ -106,6 +114,8 @@ Sub stockanalysis()
                     If open_price = 0 Then
 
                         ws.Range("K" & sumtbl).Value = 1
+
+                        ' Condition Formatting of ROW "K" to percent
 
                         ws.Range("K" & sumtbl).NumberFormat = "0.00%"
 
@@ -116,6 +126,8 @@ Sub stockanalysis()
                     Else
 
                         ws.Range("K" & sumtbl).Value = (price_difference / open_price)
+
+                        ' Conditional Formatting of ROW "K"
 
                         ws.Range("K" & sumtbl).NumberFormat = "0.00%"
 
@@ -134,6 +146,8 @@ Sub stockanalysis()
             End If
 
         Next i
+
+            ' Figure out last row
    
             endrow = ws.Cells(Rows.count, 9).End(xlUp).Row
 
@@ -141,17 +155,25 @@ Sub stockanalysis()
 
             If ws.Cells(i, 10).Value > 0 Then
 
+                ' Conditional if > 0 then color GREEN
+
                 ws.Cells(i, 10).Interior.ColorIndex = 4
 
             Else
+
+                ' If not then color RED
 
                 ws.Cells(i, 10).Interior.ColorIndex = 3
 
             End If
        
         Next i
+
+            ' Make variable to calculate greatest volume
        
             greatestvol = ws.Range("L2").Value
+
+                ' Start loop
 
                 For i = 3 To endrow
 
@@ -168,14 +190,20 @@ Sub stockanalysis()
                     ws.Cells(4, 17).Value = greatestvol
                    
                     ws.Cells(4, 16).Value = GTV
+
+                    ' Make a variable to calculate greatest increase
    
                     greatestinc = ws.Cells(2, 11).Value
+
+                        ' Start loop
 
                         For i = 3 To endrow
 
                             If (ws.Cells(i, 11).Value > greatestinc) Then
 
                                 greatestinc = ws.Cells(i, 11).Value
+
+                                ' Conditional Format change to percent
                                
                                 ws.Range("Q2").NumberFormat = "0.00%"
                                
@@ -189,21 +217,29 @@ Sub stockanalysis()
                            
                             ws.Cells(2, 16).Value = GPI
 
+                            ' Make a variable to calculate greatest dec
+
                             greatestdec = ws.Cells(2, 11).Value
+
+                        ' Start loop
 
                         For i = 3 To endrow
 
                             If (ws.Cells(i, 11).Value < greatestdec) Then
 
                                 greatestdec = ws.Cells(i, 11).Value
+
+                                ' Conditional format to percent
                                
                                 ws.Range("Q3").NumberFormat = "0.00%"
-                               
+
                                 GPD = ws.Cells(i, 9).Value
 
                             End If
 
                     Next i
+
+                        ' Print
 
                         ws.Cells(3, 17).Value = greatestdec
                        
